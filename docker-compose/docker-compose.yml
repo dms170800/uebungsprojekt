@@ -1,6 +1,6 @@
 ﻿services:
   todoapp:
-    image: ghcr.io/dms170800/uebungsprojekt-todoapp:1.0
+    image: ghcr.io/dms170800/uebungsprojekt-todoapp:1.1
     ports:
       - "3000:3000"
     environment:
@@ -29,3 +29,4 @@
 networks:
   todoapp_network:
     driver: bridge
+
