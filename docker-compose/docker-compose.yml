@@ -1,0 +1,31 @@
+﻿services:
+  todoapp:
+    image: ghcr.io/dms170800/uebungsprojekt-todoapp:1.0
+    ports:
+      - "3000:3000"
+    environment:
+      - REDIS_HOST=redis-master
+      - REDIS_PORT=6379
+    depends_on:
+      - redis-master
+      - redis-slave
+    networks:
+      - todoapp_network
+
+  redis-master:
+    image: redis:7-alpine
+    command: ["redis-server","--appendonly","yes"]
+    networks:
+      - todoapp_network
+
+  redis-slave:
+    image: redis:7-alpine
+    command: ["redis-server","--replicaof","redis-master","6379","--appendonly","yes"]
+    depends_on:
+      - redis-master
+    networks:
+      - todoapp_network
+
+networks:
+  todoapp_network:
+    driver: bridge

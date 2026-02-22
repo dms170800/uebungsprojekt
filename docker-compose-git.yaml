@@ -1,0 +1,30 @@
+﻿services:
+  todoapp:
+    image: to-do-appv1-todoapp
+    ports:
+      - "3000:3000"
+    environment:
+      - REDIS_HOST=redis-master
+      - REDIS_PORT=6379
+    depends_on:
+      - redis-master
+      - redis-slave
+    networks:
+      - todoapp_network
+
+  redis-master:
+    image: to-do-appv1-redis-master
+    networks:
+      - todoapp_network
+
+  redis-slave:
+    image: to-do-appv1-redis-slave
+    depends_on:
+      - redis-master
+    networks:
+      - todoapp_network
+
+networks:
+  todoapp_network:
+    name: todoapp_network
+    driver: bridge

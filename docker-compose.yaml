@@ -1,0 +1,30 @@
+﻿services:
+  todoapp:
+    build: ./web-frontend
+    ports:
+      - "3000:3000"
+    environment:
+      - REDIS_HOST=redis-master
+      - REDIS_PORT=6379
+    depends_on:
+      - redis-master
+      - redis-slave
+    networks:
+      - todoapp_network
+
+  redis-master:
+    build: ./redis-master
+    networks:
+      - todoapp_network
+
+  redis-slave:
+    build: ./redis-slave
+    depends_on:
+      - redis-master
+    networks:
+      - todoapp_network
+
+networks:
+  todoapp_network:
+    name: todoapp_network
+    driver: bridge
